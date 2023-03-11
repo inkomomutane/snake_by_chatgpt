@@ -21,29 +21,22 @@ jobs:
       - name: Build JAR
         run: javac Snake.java && jar cvfm Snake.jar MANIFEST.MF Snake.class
 
-      - name: Download and cache Electron
-        uses: actions/cache@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2
         with:
-          path: ~/.cache/electron
-          key: electron-cache
-          restore-keys: |
-            ${{ runner.os }}-electron-
-            ${{ runner.os }}-
+          node-version: '14.x'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Electron Builder
+        run: npm install electron-builder@22.11.7
 
       - name: Build Windows Executable
-        uses: electron-userland/electron-builder@v1
-        with:
-          platform: windows
-          config: ./electron-builder.yml
+        run: npx electron-builder build --windows
 
       - name: Build Linux Executable
-        uses: electron-userland/electron-builder-action@v1
-        with:
-          platform: linux
-          config: ./electron-builder.yml
+        run: npx electron-builder build --linux
+
+      - name: Build macOS Executable
+        run: npx electron-builder build --macos
 
       - name: Archive Build Artifacts
         uses: actions/upload-artifact@v2
