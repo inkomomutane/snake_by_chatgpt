@@ -34,7 +34,7 @@ jobs:
         run: npm install
 
       - name: Build Windows Executable
-        uses: electron-userland/electron-builder-action@v1
+        uses: electron-userland/electron-builder@v1
         with:
           platform: windows
           config: ./electron-builder.yml
