@@ -19,22 +19,22 @@ jobs:
         with:
           java-version: 11
       - name: Compile with javac
-        run: javac snake/Snake.java
+        run: javac Snake.java
       - name: Create executable app
         run: |
           if [[ "$OSTYPE" == "linux-gnu"* ]]; then
             mkdir -p snake/bin
-            printf "#!/bin/bash\njava -cp %s snake.Snake\n" "$(pwd)/snake" > snake/bin/run.sh
+            printf "#!/bin/bash\njava -cp %s Snake\n" "$(pwd)" > snake/bin/run.sh
             chmod +x snake/bin/run.sh
             tar -czvf ${{ matrix.artifact-name }} snake/bin/
           elif [[ "$OSTYPE" == "darwin"* ]]; then
             mkdir -p snake.app/Contents/MacOS
-            printf "#!/bin/bash\njava -cp %s snake.Snake\n" "$(pwd)/snake" > snake.app/Contents/MacOS/run.sh
+            printf "#!/bin/bash\njava -cp %s Snake\n" "$(pwd)" > snake.app/Contents/MacOS/run.sh
             chmod +x snake.app/Contents/MacOS/run.sh
             tar -czvf ${{ matrix.artifact-name }} snake.app/
           elif [[ "$OSTYPE" == "msys"* ]]; then
             mkdir -p snake/bin
-            printf "@echo off\njava -cp \"%s\" snake.Snake\n" "%CD%\snake" > snake/bin/run.bat
+            printf "@echo off\njava -cp \"%s\" Snake\n" "%CD%" > snake/bin/run.bat
             tar -czvf ${{ matrix.artifact-name }} snake/bin/
           fi
         shell: bash
