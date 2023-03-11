@@ -22,13 +22,13 @@ jobs:
         run: javac Snake.java && jar cvfm Snake.jar MANIFEST.MF Snake.class
 
       - name: Build Windows Executable
-        uses: electron-userland/electron-builder@v2.1.0
+        uses: electron-userland/electron-builder@v22.11.7
         with:
           platform: windows
           config: ./electron-builder.yml
 
       - name: Build Linux Executable
-        uses: electron-userland/electron-builder@v2.1.0
+        uses: electron-userland/electron-builder@v22.11.7
         with:
           platform: linux
           config: ./electron-builder.yml
