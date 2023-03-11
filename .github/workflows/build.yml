@@ -1,45 +1,24 @@
-name: Build Executable App
+name: Compile snake.java
 
 on:
   push:
-    branches:
-      - master
+    branches: master # Compile on push to the main branch
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        artifact-name: [snake-linux.tar.gz, snake-mac.tar.gz, snake-windows.zip]
+    runs-on: ubuntu-latest # Use the latest version of Ubuntu as the build environment
+    
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Compile with javac
-        run: javac Snake.java
-      - name: Create executable app
-        run: |
-          if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-            mkdir -p snake/bin
-            printf "#!/bin/bash\njava -cp %s Snake\n" "$(pwd)" > snake/bin/run.sh
-            chmod +x snake/bin/run.sh
-            tar -czvf ${{ matrix.artifact-name }} snake/bin/
-          elif [[ "$OSTYPE" == "darwin"* ]]; then
-            mkdir -p snake.app/Contents/MacOS
-            printf "#!/bin/bash\njava -cp %s Snake\n" "$(pwd)" > snake.app/Contents/MacOS/run.sh
-            chmod +x snake.app/Contents/MacOS/run.sh
-            tar -czvf ${{ matrix.artifact-name }} snake.app/
-          elif [[ "$OSTYPE" == "msys"* ]]; then
-            mkdir -p snake/bin
-            printf "@echo off\njava -cp \"%s\" Snake\n" "%CD%" > snake/bin/run.bat
-            tar -czvf ${{ matrix.artifact-name }} snake/bin/
-          fi
-        shell: bash
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.artifact-name }}
-          path: ${{ matrix.artifact-name }}
+    - name: Checkout code # Checkout your repository code
+      uses: actions/checkout@v2
+
+    - name: Set up Java # Set up Java development environment
+      uses: actions/setup-java@v1
+      with:
+        java-version: '11' # Set the Java version to use for the build
+
+    - name: Build snake.java # Build snake.java file
+      run: javac snake.java
+      
+    - name: Generate .exe # Generate executable file
+      run: gcj -o snake.exe snake.java
