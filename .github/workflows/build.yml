@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up JDK
@@ -21,14 +21,26 @@ jobs:
       - name: Build JAR
         run: javac Snake.java && jar cvfm Snake.jar MANIFEST.MF Snake.class
 
+      - name: Download and cache Electron
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/electron
+          key: electron-cache
+          restore-keys: |
+            ${{ runner.os }}-electron-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Build Windows Executable
-        uses: electron-userland/electron-builder@v22.11.7
+        uses: electron-userland/electron-builder-action@v1
         with:
           platform: windows
           config: ./electron-builder.yml
 
       - name: Build Linux Executable
-        uses: electron-userland/electron-builder@v22.11.7
+        uses: electron-userland/electron-builder-action@v1
         with:
           platform: linux
           config: ./electron-builder.yml
