@@ -4,7 +4,7 @@ name: Build Snake Game from chat GPT
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
