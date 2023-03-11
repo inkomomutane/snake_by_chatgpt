@@ -1,0 +1,23 @@
+productName: Snake
+appId: com.example.snake
+version: 1.0.0
+directories:
+  output: dist
+extraFiles:
+  - from: Snake.jar
+    to: .
+  - from: jre
+    to: .
+win:
+  target: nsis
+  icon: icon.ico
+  extraResources:
+    - from: jre
+      to: jre
+linux:
+  target: deb
+  icon: icon.png
+  extraResources:
+    - from: jre
+      to: jre
+      transform: 'chmod +x jre/bin/java'
