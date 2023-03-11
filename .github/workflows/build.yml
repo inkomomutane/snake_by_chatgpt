@@ -1,5 +1,4 @@
-
-name: Build Snake Game from chat GPT
+name: Build Executables
 
 on:
   push:
@@ -23,20 +22,16 @@ jobs:
         run: javac Snake.java && jar cvfm Snake.jar MANIFEST.MF Snake.class
 
       - name: Build Windows Executable
-        uses: heuristicsystems/launch4j-action@v1.3
+        uses: electron-userland/electron-builder@v2.1.0
         with:
-          config_file: ./launch4j.xml
-          jar_path: ./Snake.jar
+          platform: windows
+          config: ./electron-builder.yml
 
-      - name: Build Linux AppImage
-        uses: zyedidia/makeself-action@v1
+      - name: Build Linux Executable
+        uses: electron-userland/electron-builder@v2.1.0
         with:
-          target_file: dist/linux/Snake.AppImage
-          run_command: java -jar Snake.jar
-          args: "-nogui"
-          bootstrap_script: |
-            #!/bin/sh
-            exec "$(dirname "$0")/jre/bin/java" -jar "$0" "$@"
+          platform: linux
+          config: ./electron-builder.yml
 
       - name: Archive Build Artifacts
         uses: actions/upload-artifact@v2
