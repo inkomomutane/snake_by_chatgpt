@@ -17,10 +17,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11'
-
-      - name: Create MANIFEST.MF
-        run: echo "Main-Class: Snake" > MANIFEST.MF
-
+          
       - name: Build JAR
         run: javac Snake.java && jar cvfm Snake.jar MANIFEST.MF Snake.class
 
